@@ -11,7 +11,7 @@ export const handleWhereClause = (query: QueryString.ParsedQs): WhereOptions<Whe
     const whereClause: WhereOptions<WhereClauseType> = {};
 
     if (name) {
-        whereClause.name = { [Op.like]: `%${name}%` };
+        whereClause.name = { [Op.iLike]: `%${name}%` };
     }
     if (address) {
         whereClause.address = `${address}`;
