@@ -29,7 +29,7 @@ export const getInventoryItems = async (req: Request, res: Response) => {
 export const addInventoryItem = async (req: Request, res: Response) => {
     const { name, address, price } = req.body;
 
-    const err = new AddInventoryValidation(req.body).isString('name').isStringOrNumber('price');
+    const err = new AddInventoryValidation(req.body).isString('name').isStringOrNumber('price').isIn('address');
 
     if (err.message.length) {
         res.json({ message: err });

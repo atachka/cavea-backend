@@ -1,4 +1,4 @@
-import { AddItemDto } from '../types';
+import { AddItemDto, AddressEnum } from '../types';
 
 export class AddInventoryValidation {
     obj: AddItemDto;
@@ -9,7 +9,8 @@ export class AddInventoryValidation {
     }
 
     private isRequired(keyName: string) {
-        if (!this.obj[keyName]) {
+        const value = `${this.obj[keyName]}`.replace(/\s/g, '');
+        if (!value) {
             this.message.push(`${keyName} must not be empty`);
         }
         return this;
@@ -40,6 +41,15 @@ export class AddInventoryValidation {
 
         if (typeof this.obj[keyName] !== 'string' && typeof this.obj[keyName] !== 'number') {
             this.message.push(`${keyName} should be a string or a number`);
+        }
+        return this;
+    }
+    isIn(keyName: string) {
+        this.isRequired(keyName);
+        const values = Object.values(AddressEnum);
+        const objVal = this.obj[keyName] as AddressEnum;
+        if (values.indexOf(objVal) === -1) {
+            this.message.push(`${keyName} should be one of [${values}]`);
         }
         return this;
     }
