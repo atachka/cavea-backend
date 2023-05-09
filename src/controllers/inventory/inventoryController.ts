@@ -3,16 +3,17 @@ import { Inventory } from '../../db/models/index';
 import { AddInventoryValidation, handleWhereClause } from '../../utils';
 
 export const getInventoryItems = async (req: Request, res: Response) => {
-    const whereClause = handleWhereClause(req.query);
+    const { where, order } = handleWhereClause(req.query);
     const limit = parseInt(req.query.limit as string) || 20;
     const offset = parseInt(req.query.page as string) * limit || 0;
     const inventory = await Inventory.findAll({
-        limit: limit,
-        offset: offset,
-        where: whereClause
+        limit,
+        offset,
+        where,
+        order
     });
 
-    const count = await Inventory.count({ where: whereClause });
+    const count = await Inventory.count({ where });
 
     res.json({
         data: inventory,

@@ -1,10 +1,12 @@
 import QueryString from 'qs';
-import { Op, WhereOptions } from 'sequelize';
+import { Op, WhereOptions, OrderItem } from 'sequelize';
 import { WhereClauseType } from '../types';
 
-export const handleWhereClause = (query: QueryString.ParsedQs): WhereOptions<WhereClauseType> => {
+export const handleWhereClause = (query: QueryString.ParsedQs): { where: WhereOptions<WhereClauseType>; order: OrderItem[] } => {
     const name = query.name;
     const address = query.address;
+    const sort = query.sort;
+    const sortBy = query.sortBy;
     const minPrice = parseFloat(query.minPrice as string);
     const maxPrice = parseFloat(query.maxPrice as string);
 
@@ -23,5 +25,8 @@ export const handleWhereClause = (query: QueryString.ParsedQs): WhereOptions<Whe
     } else if (maxPrice) {
         whereClause.price = { [Op.lte]: maxPrice };
     }
-    return whereClause;
+
+    const order: OrderItem[] = [];
+    if (sortBy && sort) order.push([`${sortBy}`, `${sort}`]);
+    return { where: whereClause, order };
 };
