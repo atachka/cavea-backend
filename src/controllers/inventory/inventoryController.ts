@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { Inventory } from '../../db/models/index';
-import { handleWhereClause } from '../../utils';
+import { AddInventoryValidation, handleWhereClause } from '../../utils';
 
 export const getInventoryItems = async (req: Request, res: Response) => {
     const whereClause = handleWhereClause(req.query);
@@ -28,9 +28,16 @@ export const getInventoryItems = async (req: Request, res: Response) => {
 
 export const addInventoryItem = async (req: Request, res: Response) => {
     const { name, address, price } = req.body;
+
+    const err = new AddInventoryValidation(req.body).isString('name').isStringOrNumber('price');
+
+    if (err.message.length) {
+        res.json({ message: err });
+    }
+
     await Inventory.create({ name, address, price });
 
-    res.json({ message: 'Inventory item added', added: true });
+    res.json({ message: 'Inventory item added', success: true });
 };
 
 export const deleteInventoryItem = async (req: Request, res: Response) => {
@@ -40,7 +47,7 @@ export const deleteInventoryItem = async (req: Request, res: Response) => {
 
     if (inventory) {
         await inventory.destroy();
-        res.json({ message: 'Inventory item deleted', deleted: true });
+        res.json({ message: 'Inventory item deleted', success: true });
     } else {
         res.status(404).json({ message: 'Inventory item not found' });
     }
