@@ -11,7 +11,7 @@ app.use(bodyParser.json());
 
 app.use(cors({ origin: ['http://localhost:3000'] }));
 
-app.use('/api/inventory', inventoryRouter);
+app.use('/api/inventories', inventoryRouter);
 
 app.use(globalErrorHandler);
 
