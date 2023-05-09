@@ -2,12 +2,12 @@
 
 1. Add .env file to the root of the project, for example:
 
-PORT=4000  
- DB_HOST=localhost  
- DB_PORT=5432  
- DB_NAME=postgres  
- DB_USER=postgres  
- DB_PASSWORD=admin
+   PORT=4000  
+   DB_HOST=localhost  
+   DB_PORT=5432  
+   DB_NAME=postgres  
+   DB_USER=postgres  
+   DB_PASSWORD=admin
 
 2. run npm install
 
